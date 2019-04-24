@@ -10,7 +10,7 @@ class OnionPlugin {
         this.plugins            = {};
         this.pluginFns= {};
 
-        if (options.methods && options.methods instanceof Array) {
+        if (options && options.methods && options.methods instanceof Array) {
             this.pluginMethods = [...this.pluginMethods, ...options.methods];
             options.methods.forEach((it, ix, arr) => {
                 this.pluginMiddlewares[it] = [];
