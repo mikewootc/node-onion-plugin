@@ -14,9 +14,10 @@ let appCtx = {flag: 'appCtxFlag'};
 onionPlugin.init(appCtx);
 onionPlugin.start(appCtx);
 
-setInterval(() => {
+setInterval(async () => {
     let ctx = {req: 'TheRequest'};
-    onionPlugin.pluginFns.msgIn(ctx);
+    //onionPlugin.pluginFns.msgIn(ctx);
+    await onionPlugin.callPluginMethod('msgIn', ctx);
 }, 2000);
 
 // vim:set tw=0:

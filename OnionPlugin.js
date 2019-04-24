@@ -39,7 +39,8 @@ class OnionPlugin {
         await this.pluginFns.release(appCtx);
     }
 
-    async callPluginFn() {
+    async callPluginMethod(method, ctx) {
+        await this.pluginFns[method](ctx);
     }
 
     fnWrapper(fn, pluginName, fnName) {
