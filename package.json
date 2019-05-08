@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cpclog": "^1.0.13"
+    "cpclog": "^1.0.13",
+    "isclass": "^1.0.0"
   }
 }

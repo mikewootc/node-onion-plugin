@@ -6,3 +6,8 @@ cpclog@^1.0.13:
   version "1.0.13"
   resolved "https://registry.npm.taobao.org/cpclog/download/cpclog-1.0.13.tgz#698b8a485dedb171136d2bef7ae1075dcc1ee0d9"
   integrity sha1-aYuKSF3tsXETbSvveuEHXcwe4Nk=
+
+isclass@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npm.taobao.org/isclass/download/isclass-1.0.0.tgz#aa5c1d20b72eb29b750f4d1c0d65227584fa601d"
+  integrity sha1-qlwdILcuspt1D00cDWUidYT6YB0=

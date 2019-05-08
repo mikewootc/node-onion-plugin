@@ -1,4 +1,5 @@
 const Logger = require('cpclog');
+const isClass = require('isclass');
 
 const logger = Logger.createWrapper('OnionPlugin', Logger.LEVEL_INFO);
 
@@ -55,7 +56,7 @@ class OnionPlugin {
         return wrapper;
     }
 
-    isClass(sth) {
+    /* isClass(sth) {
         const isCtorClass = sth.constructor && sth.constructor.toString().substring(0, 5) === 'class';
         if(sth.prototype === undefined) {
             return isCtorClass;
@@ -66,14 +67,16 @@ class OnionPlugin {
             && sth.prototype.constructor.toString().substring(0, 5) === 'class';
 
         return isCtorClass || isPrototypeCtorClass;
-    }
+    } */
 
     registerPlugin(ImportedPlugin) {
         try {
             let plugin;
             if (this.isClass(ImportedPlugin)) { // 导入的plugin是个类...
+                logger.trace('Register class');
                 plugin = new ImportedPlugin();  // ...instance it
             } else {
+                logger.trace('Register object');
                 plugin = ImportedPlugin;        // 已经是对象.
             }
 
