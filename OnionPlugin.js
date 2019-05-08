@@ -72,7 +72,7 @@ class OnionPlugin {
     registerPlugin(ImportedPlugin) {
         try {
             let plugin;
-            if (this.isClass(ImportedPlugin)) { // 导入的plugin是个类...
+            if (isClass(ImportedPlugin)) { // 导入的plugin是个类...
                 logger.trace('Register class');
                 plugin = new ImportedPlugin();  // ...instance it
             } else {
