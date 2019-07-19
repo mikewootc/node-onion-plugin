@@ -1,0 +1,72 @@
+# 使用
+
+## 通用
+
+    const OnionPlugin   = require('node-onion-plugin');
+
+    // init
+    let onionPlugin = new OnionPlugin({methods: ['msgIn', 'msgOut']});
+    await onionPlugin.registerPluginList([Signaling, AppMsg]);
+    await onionPlugin.init(this.appCtx);
+    await this.onionPlugin.start(this.appCtx);
+
+    await this.onionPlugin.callPluginMethod('msgIn', ioCtx);
+
+## socket.io
+
+    const SocketIo      = require('socket.io');
+    const OnionPlugin   = require('node-onion-plugin');
+
+    // init
+
+    sio = SocketIo(this.serverHttp);
+    sio.on('connection', (socket) => {
+        socket.on('disconnect', async() => {
+            //let userId = this.sockets[socket.id];
+            logger.debug(Logger.YELLOW, this.serverAddr, 'user disconnected', this.connectedCnt, 'socketId:', socket.id, userId);
+            if (userId) {
+                let jsonMsg = JSON.stringify({type: Constants.SIGNALING_USER_DISCONNECTED, userId});
+                let user = await this.clusterUser.getUser(userId, socket.id);
+                if (user) {
+                    await this._handleMsg('signaling', jsonMsg, null); // FIXME: 
+                }
+                //delete this.sockets[socket.id];
+            }
+        });
+
+        // 此login不包含用户名密码校验
+        socket.on('login', (userId) => {this._handleLogin(userId, socket)});
+
+        socket.on('loginSecure', (jsonMsg) => {this._handleLoginSecure(jsonMsg, socket)});
+
+        socket.on('logout', (userId) => {this._handleLogout(userId, socket)});
+
+
+        socket.on('signaling', (jsonMsg, sendAck) => {
+            this._handleMsg('signaling', jsonMsg, sendAck);
+        });
+        socket.on('appmsg', (jsonMsg, sendAck) => {
+            this._handleMsg('appmsg', jsonMsg, sendAck);
+        });
+
+        socket.on('msgping', function(msg) {
+            logger.debug(this.serverAddr, 'Got ping:', msg);
+            //socket.emit();
+            socket.emit('msgpong', msg);
+        });
+
+        socket.on('heartbeat', (userId, sendAck) => {
+            if (userId) {
+                //logger.debug('[34mheartbeat from:[0m', userId);
+                this.clusterUser.touchUser(userId);
+            }
+        });
+    });
+
+    let onionPlugin = new OnionPlugin({methods: ['msgIn', 'msgOut']});
+    await onionPlugin.registerPluginList([Signaling, AppMsg]);
+    await onionPlugin.init(this.appCtx);
+    await this.onionPlugin.start(this.appCtx);
+
+    await this.onionPlugin.callPluginMethod('msgIn', ioCtx);
+
